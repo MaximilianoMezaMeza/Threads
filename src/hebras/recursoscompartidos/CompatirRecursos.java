@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package hebras;
+package hebras.recursoscompartidos;
 
 import java.util.concurrent.*;
 import java.util.concurrent.locks.*;
@@ -12,7 +12,7 @@ import java.util.concurrent.locks.*;
 abstract class IntGenerator{
     //El concepto de atomicidad tiene que ver con que una instruccion en un lenguaje de alto nivel tenga 
     //relación con una de bajo nivel como ensamblador.
-    //El uso de las variables volaite ayuda a la atomicidad, pero no la asegura, o sea, JVM trabaja con
+    //El uso de las variables volatite ayuda a la atomicidad, pero no la asegura, o sea, JVM trabaja con
     //palabras de 32 bits, si por ejemplo se usara un double o long (que son de 64 bits) puede
     //provocar perdida de información (debido a las operaciones de ensamblador).
     //volatile quiere decir que si se realiza una escritura en esta variable todas las tareas(o lecturas)
@@ -50,7 +50,7 @@ class EvenChecker implements Runnable{
             int val=generator.next(); // next opera en un unico recurso compartido, objeto EvenGenerator
             if(val%2!=0)
             {
-                System.out.println("Instancia "+id+" valor= "+val+" no par (not even)");
+                System.out.println("Instancia "+generator.getClass().getName()+" "+id+" valor= "+val+" IMPAR)");
                 generator.cancel();
             }
         }
@@ -58,7 +58,7 @@ class EvenChecker implements Runnable{
     
     public static void test(IntGenerator gp,int count)
     {
-        System.out.println("Press control-C to exit");
+        System.out.println("Press control-C to exit\n");
         ExecutorService exec= Executors.newCachedThreadPool();
         for(int i=0;i<count;i++)
         {
@@ -89,7 +89,7 @@ class EvenGenerator extends IntGenerator{
 class SynchronizedEvenGenerator extends IntGenerator{
     private int currentEvenValue=0;
     @Override
-    //Los métodos o variables, archivos,, etc que usen synchronized seran bloqueados para cualquier otra
+    //Los métodos o variables, archivos,etc que usen synchronized seran bloqueados para cualquier otra
     //hebra o tarea que quiera utilizarlo, solo la primera hebra que acceda al método(en este caso) podra
     //usar el objeto, si existen más de un método(o variable) synchronized no podrá ser usado por ninguna 
     // hebra o tarea hasta que la hebra que ocupa actualmente el objeto lo libere.

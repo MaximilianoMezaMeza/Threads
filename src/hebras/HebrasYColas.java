@@ -6,6 +6,8 @@
 
 package hebras;
 
+import hebras.conceptos.LiftOff;
+
 import java.util.concurrent.*;
 import java.io.*;
 // La clase LiftOff está en la clase Hebras, toma un numero que se ingresa en el constructor y luego la hebra
